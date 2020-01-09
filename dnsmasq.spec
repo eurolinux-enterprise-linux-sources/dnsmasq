@@ -13,7 +13,7 @@
 
 Name:           dnsmasq
 Version:        2.76
-Release:        5%{?extraversion}%{?dist}
+Release:        7%{?extraversion}%{?dist}
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -54,6 +54,8 @@ Patch16:	dnsmasq-2.76-CVE-2017-14495.patch
 Patch17:	dnsmasq-2.76-gita3303e196.patch
 Patch18:	dnsmasq-2.76-underflow.patch
 Patch19:	dnsmasq-2.76-misc-cleanups.patch
+Patch20:	dnsmasq-2.76-CVE-2017-14491-2.patch
+Patch21:	dnsmasq-2.76-inotify.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -108,6 +110,8 @@ query/remove a DHCP server's leases.
 %patch17 -p1 -b .gita3303e196
 %patch18 -p1 -b .underflow
 %patch19 -p1 -b .misc
+%patch20 -p1 -b .CVE-2017-14491-2
+%patch21 -p1 -b .inotify
 
 # use /var/lib/dnsmasq instead of /var/lib/misc
 for file in dnsmasq.conf.example man/dnsmasq.8 man/es/dnsmasq.8 src/config.h; do
@@ -194,6 +198,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Wed May 09 2018 Martin Sehnoutka <msehnout@redhat.com> - 2.76-7
+- Resolves: #1474515 dhcp-agent dnsmasq max files
+
+* Wed Sep 27 2017 Petr Menšík <pemensik@redhat.com> - 2.76-6
+- Small correction of CVE-2017-14491
+
 * Tue Sep 26 2017 Petr Menšík <pemensik@redhat.com> - 2.76-5
 - Fix CVE-2017-14491
 - Fix CVE-2017-14492
