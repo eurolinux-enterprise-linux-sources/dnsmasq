@@ -13,7 +13,7 @@
 
 Name:           dnsmasq
 Version:        2.76
-Release:        7%{?extraversion}%{?dist}
+Release:        9%{?extraversion}%{?dist}
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -56,6 +56,11 @@ Patch18:	dnsmasq-2.76-underflow.patch
 Patch19:	dnsmasq-2.76-misc-cleanups.patch
 Patch20:	dnsmasq-2.76-CVE-2017-14491-2.patch
 Patch21:	dnsmasq-2.76-inotify.patch
+Patch22:	dnsmasq-2.76-min-query-port.patch
+# commit a6004d7f17687ac2455f724d0b57098c413f128d
+Patch23:	dnsmasq-2.76-dnssec-cache.patch
+# commit a997ca0da044719a0ce8a232d14da8b30022592b
+Patch24:	dnsmasq-2.76-dnssec-passthru.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -112,6 +117,9 @@ query/remove a DHCP server's leases.
 %patch19 -p1 -b .misc
 %patch20 -p1 -b .CVE-2017-14491-2
 %patch21 -p1 -b .inotify
+%patch22 -p1 -b .rh1614331
+%patch23 -p1 -b .dnssec-cache
+%patch24 -p1 -b .dnssec-passthru
 
 # use /var/lib/dnsmasq instead of /var/lib/misc
 for file in dnsmasq.conf.example man/dnsmasq.8 man/es/dnsmasq.8 src/config.h; do
@@ -198,6 +206,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Tue Mar 26 2019 Petr Menšík <pemensik@redhat.com> - 2.79-9
+- Fix passing of dnssec enabled queries (#1638703)
+
+* Mon Mar 18 2019 Petr Menšík <pemensik@redhat.com> - 2.76-8
+- Stop using privileged port for outbound queries (#1614331)
+
 * Wed May 09 2018 Martin Sehnoutka <msehnout@redhat.com> - 2.76-7
 - Resolves: #1474515 dhcp-agent dnsmasq max files
 
