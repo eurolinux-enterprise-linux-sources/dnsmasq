@@ -11,7 +11,7 @@
 
 Name:           dnsmasq
 Version:        2.48
-Release:        17%{?extraversion}%{?dist}
+Release:        18%{?extraversion}%{?dist}
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -32,6 +32,8 @@ Patch10:        %{name}-2.48-Fix-DHCP-release-problem.patch
 Patch11:        %{name}-2.48-fix_initscript_status.patch
 Patch12:        %{name}-2.48-nofds.patch
 Patch13:        %{name}-2.48-reuseaddrport.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1495409
+Patch14:	dnsmasq-2.48-CVE-2017-14491.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  dbus-devel
@@ -78,6 +80,7 @@ query/remove a DHCP server's leases.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1 -b .CVE-2017-14491
 
 %build
 # Note the main Makefile handles RPM_OPT_FLAGS internally,
@@ -156,6 +159,9 @@ fi
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Tue Sep 26 2017 Petr Menšík <pemensik@redhat.com> - 2.48-18
+- Fix CVE-2017-14491
+
 * Mon Jan 18 2016 Pavel Šimerda <psimerda@redhat.com> - 2.48-17
 - Resolves: #1154953 - use both SO_REUSEADDR and SO_REUSEPORT
 
