@@ -11,7 +11,7 @@
 
 Name:           dnsmasq
 Version:        2.48
-Release:        14%{?extraversion}%{?dist}
+Release:        16%{?extraversion}%{?dist}
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -30,6 +30,7 @@ Patch8:         %{name}-2.48-Set-SO_BINDTODEVICE-when-creating-sockets.patch
 Patch9:         %{name}-2.48-Fixing-initscript-restart-stop-functions.patch
 Patch10:        %{name}-2.48-Fix-DHCP-release-problem.patch
 Patch11:        %{name}-2.48-fix_initscript_status.patch
+Patch12:        %{name}-2.48-nofds.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  dbus-devel
@@ -74,6 +75,7 @@ query/remove a DHCP server's leases.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 
 %build
 # Note the main Makefile handles RPM_OPT_FLAGS internally,
@@ -152,6 +154,13 @@ fi
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Thu Dec 10 2015 Pavel Šimerda <psimerda@redhat.com> - 2.48-16
+- Resolves: #1288617 - add missing patch file
+
+* Wed Dec 09 2015 Pavel Šimerda <psimerda@redhat.com> - 2.48-15
+- Resolves: #1288617 - dnsmasq: Non-interactive startup might lead to 100% cpu
+  consumption
+
 * Fri Apr 04 2014 Tomas Hozza <thozza@redhat.com> - 2.48-14
 - Fix initscript status command to check only the system instance (#991473)
 
