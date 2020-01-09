@@ -13,7 +13,7 @@
 
 Name:           dnsmasq
 Version:        2.76
-Release:        9%{?extraversion}%{?dist}
+Release:        10%{?extraversion}%{?dist}.1
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -61,6 +61,12 @@ Patch22:	dnsmasq-2.76-min-query-port.patch
 Patch23:	dnsmasq-2.76-dnssec-cache.patch
 # commit a997ca0da044719a0ce8a232d14da8b30022592b
 Patch24:	dnsmasq-2.76-dnssec-passthru.patch
+Patch25:	dnsmasq-2.76-rh1721668-1.patch
+Patch26:	dnsmasq-2.76-rh1721668-2.patch
+Patch27:	dnsmasq-2.76-rh1721668-3.patch
+Patch28:	dnsmasq-2.76-rh1721668-4.patch
+# commit 60ac10d8d86e6f95ab0f06abe6c42596adcedcb8
+Patch29:	dnsmasq-2.76-rh1752569.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -120,6 +126,11 @@ query/remove a DHCP server's leases.
 %patch22 -p1 -b .rh1614331
 %patch23 -p1 -b .dnssec-cache
 %patch24 -p1 -b .dnssec-passthru
+%patch25 -p1 -b .rh1721668-1
+%patch26 -p1 -b .rh1721668-2
+%patch27 -p1 -b .rh1721668-3
+%patch28 -p1 -b .rh1721668-4
+%patch29 -p1 -b .rh1752569
 
 # use /var/lib/dnsmasq instead of /var/lib/misc
 for file in dnsmasq.conf.example man/dnsmasq.8 man/es/dnsmasq.8 src/config.h; do
@@ -206,6 +217,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Mon Sep 30 2019 Petr Menšík <pemensik@redhat.com> - 2.76-10.1
+- Send dhcp_release even for addresses not on local network (#1752569)
+
+* Wed Jul 03 2019 Petr Menšík <pemensik@redhat.com> - 2.76-10
+- Fix TCP queries after interface recreation (#1721668)
+
 * Tue Mar 26 2019 Petr Menšík <pemensik@redhat.com> - 2.79-9
 - Fix passing of dnssec enabled queries (#1638703)
 
