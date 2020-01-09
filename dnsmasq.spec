@@ -11,7 +11,7 @@
 
 Name:           dnsmasq
 Version:        2.48
-Release:        13%{?extraversion}%{?dist}
+Release:        14%{?extraversion}%{?dist}
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -29,6 +29,7 @@ Patch7:         %{name}-check-tftp-root-exists-and-is-accessible-at-startup.patc
 Patch8:         %{name}-2.48-Set-SO_BINDTODEVICE-when-creating-sockets.patch
 Patch9:         %{name}-2.48-Fixing-initscript-restart-stop-functions.patch
 Patch10:        %{name}-2.48-Fix-DHCP-release-problem.patch
+Patch11:        %{name}-2.48-fix_initscript_status.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  dbus-devel
@@ -72,6 +73,7 @@ query/remove a DHCP server's leases.
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
+%patch11 -p1
 
 %build
 # Note the main Makefile handles RPM_OPT_FLAGS internally,
@@ -150,6 +152,9 @@ fi
 %{_mandir}/man1/dhcp_*
 
 %changelog
+* Fri Apr 04 2014 Tomas Hozza <thozza@redhat.com> - 2.48-14
+- Fix initscript status command to check only the system instance (#991473)
+
 * Fri Jan 04 2013 Tomas Hozza <thozza@redhat.com> - 2.48-13
 - Fix the DHCP RELEASE problem when two or more dnsmasq instances are running (rhbz#887156)
 
