@@ -13,7 +13,7 @@
 
 Name:           dnsmasq
 Version:        2.76
-Release:        10%{?extraversion}%{?dist}.1
+Release:        2%{?extraversion}%{?dist}.2
 Summary:        A lightweight DHCP/caching DNS server
 
 Group:          System Environment/Daemons
@@ -38,35 +38,17 @@ Patch5:		dnsmasq-2.76-warning-fixes.patch
 Patch6:		dnsmasq-2.76-label-warning.patch
 Patch7:		dnsmasq-2.76-label-man.patch
 Patch8:		dnsmasq-2.76-coverity.patch
-# commit c77fb9d8f09d136fa71bde2469c4fd11cefa6f4a
-# commit bf4e62c19e619f7edf8d03d58d33a5752f190bfd
-# commit 3a8b0f6fccf464b1ec6d24c0e00e540ab2b17705
-Patch9:		dnsmasq-2.76-dhcp-script-log.patch
-# Fix possible different sizes of off_t
-Patch10:	dnsmasq-2.76-file_offset32.patch
-Patch11:	dnsmasq-2.76-CVE-2017-14491.patch
-Patch12:	dnsmasq-2.76-CVE-2017-14492.patch
-Patch13:	dnsmasq-2.76-CVE-2017-14493.patch
-Patch14:	dnsmasq-2.76-CVE-2017-14494.patch
-Patch15:	dnsmasq-2.76-CVE-2017-14496.patch
-Patch16:	dnsmasq-2.76-CVE-2017-14495.patch
+Patch9:		dnsmasq-2.76-CVE-2017-14491.patch
+Patch10:	dnsmasq-2.76-CVE-2017-14492.patch
+Patch11:	dnsmasq-2.76-CVE-2017-14493.patch
+Patch12:	dnsmasq-2.76-CVE-2017-14494.patch
+Patch13:	dnsmasq-2.76-CVE-2017-14496.patch
+Patch14:	dnsmasq-2.76-CVE-2017-14495.patch
 # commit a3303e196e5d304ec955c4d63afb923ade66c6e8
-Patch17:	dnsmasq-2.76-gita3303e196.patch
-Patch18:	dnsmasq-2.76-underflow.patch
-Patch19:	dnsmasq-2.76-misc-cleanups.patch
-Patch20:	dnsmasq-2.76-CVE-2017-14491-2.patch
-Patch21:	dnsmasq-2.76-inotify.patch
-Patch22:	dnsmasq-2.76-min-query-port.patch
-# commit a6004d7f17687ac2455f724d0b57098c413f128d
-Patch23:	dnsmasq-2.76-dnssec-cache.patch
-# commit a997ca0da044719a0ce8a232d14da8b30022592b
-Patch24:	dnsmasq-2.76-dnssec-passthru.patch
-Patch25:	dnsmasq-2.76-rh1721668-1.patch
-Patch26:	dnsmasq-2.76-rh1721668-2.patch
-Patch27:	dnsmasq-2.76-rh1721668-3.patch
-Patch28:	dnsmasq-2.76-rh1721668-4.patch
-# commit 60ac10d8d86e6f95ab0f06abe6c42596adcedcb8
-Patch29:	dnsmasq-2.76-rh1752569.patch
+Patch15:	dnsmasq-2.76-gita3303e196.patch
+Patch16:	dnsmasq-2.76-underflow.patch
+Patch17:	dnsmasq-2.76-misc-cleanups.patch
+Patch18:	dnsmasq-2.76-CVE-2017-14491-2.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -110,27 +92,16 @@ query/remove a DHCP server's leases.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1 -b .coverity
-%patch9 -p1 -b .scriptlog
-%patch10 -p1 -b .off_t
-%patch11 -p1 -b .CVE-2017-14491
-%patch12 -p1 -b .CVE-2017-14492
-%patch13 -p1 -b .CVE-2017-14493
-%patch14 -p1 -b .CVE-2017-14494
-%patch15 -p1 -b .CVE-2017-14496
-%patch16 -p1 -b .CVE-2017-14495
-%patch17 -p1 -b .gita3303e196
-%patch18 -p1 -b .underflow
-%patch19 -p1 -b .misc
-%patch20 -p1 -b .CVE-2017-14491-2
-%patch21 -p1 -b .inotify
-%patch22 -p1 -b .rh1614331
-%patch23 -p1 -b .dnssec-cache
-%patch24 -p1 -b .dnssec-passthru
-%patch25 -p1 -b .rh1721668-1
-%patch26 -p1 -b .rh1721668-2
-%patch27 -p1 -b .rh1721668-3
-%patch28 -p1 -b .rh1721668-4
-%patch29 -p1 -b .rh1752569
+%patch9 -p1 -b .CVE-2017-14491
+%patch10 -p1 -b .CVE-2017-14492
+%patch11 -p1 -b .CVE-2017-14493
+%patch12 -p1 -b .CVE-2017-14494
+%patch13 -p1 -b .CVE-2017-14496
+%patch14 -p1 -b .CVE-2017-14495
+%patch15 -p1 -b .gita3303e196
+%patch16 -p1 -b .underflow
+%patch17 -p1 -b .misc
+%patch18 -p1 -b .CVE-2017-14491-2
 
 # use /var/lib/dnsmasq instead of /var/lib/misc
 for file in dnsmasq.conf.example man/dnsmasq.8 man/es/dnsmasq.8 src/config.h; do
@@ -217,25 +188,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/dhcp_*
 
 %changelog
-* Mon Sep 30 2019 Petr Menšík <pemensik@redhat.com> - 2.76-10.1
-- Send dhcp_release even for addresses not on local network (#1752569)
-
-* Wed Jul 03 2019 Petr Menšík <pemensik@redhat.com> - 2.76-10
-- Fix TCP queries after interface recreation (#1721668)
-
-* Tue Mar 26 2019 Petr Menšík <pemensik@redhat.com> - 2.79-9
-- Fix passing of dnssec enabled queries (#1638703)
-
-* Mon Mar 18 2019 Petr Menšík <pemensik@redhat.com> - 2.76-8
-- Stop using privileged port for outbound queries (#1614331)
-
-* Wed May 09 2018 Martin Sehnoutka <msehnout@redhat.com> - 2.76-7
-- Resolves: #1474515 dhcp-agent dnsmasq max files
-
-* Wed Sep 27 2017 Petr Menšík <pemensik@redhat.com> - 2.76-6
+* Wed Sep 27 2017 Petr Menšík <pemensik@redhat.com> - 2.76-2.2
 - Small correction of CVE-2017-14491
 
-* Tue Sep 26 2017 Petr Menšík <pemensik@redhat.com> - 2.76-5
+* Tue Sep 26 2017 Petr Menšík <pemensik@redhat.com> - 2.76-2.1
 - Fix CVE-2017-14491
 - Fix CVE-2017-14492
 - Fix CVE-2017-14493
@@ -243,13 +199,6 @@ rm -rf $RPM_BUILD_ROOT
 - Fix CVE-2017-14496
 - Fix CVE-2017-14495
 - extra fixes
-
-* Thu Sep 14 2017 Petr Menšík <pemensik@redhat.com> - 2.76-4
-- Fix possible stack corruption on 32-bit architectures (#1188259)
-
-* Fri Mar 24 2017 Petr Menšík <pemensik@redhat.com> - 2.76-3
-- Log output of dhcp-script (#1188259)
-- Log format errors in dhcp-script init
 
 * Wed Mar 15 2017 Petr Menšík <pemensik@redhat.com> - 2.76-2
 - Fix a few coverity warnings
